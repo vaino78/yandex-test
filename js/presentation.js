@@ -25,8 +25,11 @@ $(function(){
 
 	// views
 
+	var AppView = Backbone.View.extend({
+	});
 
-
+	var SlideView = Backbone.View.extend({
+	});
 
 	// init
 
