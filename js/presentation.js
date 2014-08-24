@@ -113,6 +113,8 @@ $(function(){
 			{
 				if(this.attributes.playing)
 					this.set('playing', false);
+				if(this.attributes.fullscreen)
+					this.set('fullscreen', false);
 				return false;
 			}
 			this.set('index', (this.attributes.index+1));

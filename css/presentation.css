@@ -26,19 +26,20 @@
 div.presentation-nav-back, 
 div.presentation-nav-forw {
 	height: 100%;
-	width:  40%;
 	top: 0px;
 	position: absolute;
 }
 
 div.presentation-nav-back {
 	left: 0px;
-	cursor: w-resize;
+	cursor: default;
+	width: 10%;
 }
 
 div.presentation-nav-forw {
 	right: 0px;
-	cursor: e-resize;
+	cursor: pointer;
+	width: 80%;
 }
 
 .presentation-nav-menu {
