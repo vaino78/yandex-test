@@ -8,6 +8,13 @@ $(function(){
 		"defaults" : {
 			"url"    : null,
 			"loaded" : false
+		},
+
+		"constructor" : function(url) {
+			if(typeof(url) == 'string')
+				url = {"url" : url};
+
+			Backbone.Model.apply(this, arguments);
 		}
 	});
 
@@ -19,22 +26,30 @@ $(function(){
 		"defaults"    : {
 			"index"      : 0,
 			"slide"      : null,
-			"canBack"    : false,
-			"canForward" : false,
+			"canBack"    : null,
+			"canForward" : null,
 			"total"      : null,
 			"slides"     : new SlideCollection([])
 		},
 
 		"initialize"  : function() {
-			this.on('change:index', this.checkState);
+			this.on('change:index',  this.checkState);
+			this.on('change:slides', this.checkState);
+			this.on('change:slides', this.checkSlides);
+			this.trigger('change:slides');
 		},
 
 		"checkState"  : function() {
 			this.set({
-				"slide"      : this.attributes.slides.at(this.attributes.index),
+				"total"      : this.total(),
+				"slide"      : this.slide(this.attributes.index),
 				"canBack"    : (this.attributes.index > 0),
 				"canForward" : (this.attributes.index < this.attributes.slides.length - 1)
 			});
+		},
+
+		"checkSlides" : function() {
+			this.listenTo(this.attributes.slides, 'all', this.checkState);
 		},
 
 		"total"       : function() {
@@ -86,28 +101,30 @@ $(function(){
 		},
 
 		"initialize" : function() {
-			this.template = $.trim($('#presentationInnerTemplate').html());
+			this.template = _.template($.trim($('#presentationInnerTemplate').html()));
 
 			this.model.on('change:canBack',    this._canBack,    this);
 			this.model.on('change:canForward', this._canForward, this);
 			this.model.on('change:slide',      this._slide,      this);
-
-			this.model.checkState();
+			this.model.on('change:total',      this._total,      this);
 
 			this.render();
+
+			this._canBack();
+			this._canForward();
+			this._slide();
+			this._total();
 		},
 
 		"render"     : function() {
-			this.$el.html(_.template(this.template, {}));
+			this.$el.html(this.template({}));
 		},
 
 		"back"       : function() {
-			console.log('back');
 			this.model.back();
 		},
 
 		"forward"    : function() {
-			console.log('forward');
 			this.model.forward();
 		},
 
@@ -120,18 +137,19 @@ $(function(){
 		},
 
 		"_canBack"   : function(value) {
-			//console.log('canBack:', value);
 			this['$']('.presentation-nav-back, .presentation-nav-begin').attr('disabled', !this.model.get('canBack'));
 		},
 
 		"_canForward": function(value) {
-			//console.log('canForward:', value);
 			this['$']('.presentation-nav-forw, .presentation-nav-end').attr('disabled', !this.model.get('canForward'));
 		},
 
 		"_slide"     : function(value) {
-			//console.log('slide:', value);
 			this.$('.presentation-nav-current').val(this.model.get('index') + 1);
+		},
+
+		"_total"     : function(value) {
+			this.$('.presentation-nav-total').text(this.model.get('total'));
 		}
 	});
 
@@ -146,22 +164,23 @@ $(function(){
 
 	$.fn.presentationViewer = function(options) {
 		return this.each(function() {
-			var $this = $(this),
-				model = new ViewModel(),
-				view  = new AppView({
-					"el"    : this,
-					"model" : model
-				}),
-				slides    = $this.data('presentationSlides'),
-				slidesUrl = $this.data('presentationSlidesUrl');
+			var $this         = $(this),
+				slides        = new SlideCollection(),
+				dataSlides    = $this.data('presentationSlides'),
+				dataSlidesUrl = $this.data('presentationSlidesUrl');
 
-			if(slides && slides.length)
-				model.get('slides').set(slides);
-			else if(slidesUrl)
+			if(dataSlides && dataSlides.length)
+				slides.set(dataSlides);
+			else if(dataSlidesUrl)
 			{
-				model.get('slides').url = slidesUrl;
-				model.get('slides').fetch();
+				slides.url = dataSlidesUrl;
+				slides.fetch();
 			}
+			
+			var view  = new AppView({
+				"el"    : this,
+				"model" : new ViewModel({"slides" : slides})
+			});
 
 			$this.data('presentationViewer', view);
 		});
