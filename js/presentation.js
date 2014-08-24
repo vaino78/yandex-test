@@ -78,7 +78,22 @@ $(function(){
 	// views
 
 	var AppView = Backbone.View.extend({
-		
+		"events"     : {
+			"click .presentation-nav-back"  : "back",
+			"click .presentation-nav-forw"  : "forward",
+			"click .presentation-nav-begin" : 
+		},
+
+		"initialize" : function() {
+			this.template = $.trim($('#presentationInnerTemplate').html());
+			console.log(this);
+
+			this.render();
+		},
+
+		"render"     : function() {
+			this.$el.html(_.template(this.template, {}));
+		}
 	});
 
 	var SlideView = Backbone.View.extend({
@@ -91,5 +106,15 @@ $(function(){
 	// jQuery plugin
 
 	$.fn.presentationViewer = function(options) {
+		return this.each(function() {
+			var $this = $(this),
+				model = new ViewModel(),
+				view  = new AppView({
+					"el"    : this,
+					"model" : model
+				});
+
+			$this.data('presentationViewer', view);
+		});
 	}
 });
