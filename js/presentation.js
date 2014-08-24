@@ -17,6 +17,18 @@ $(function(){
 			url.id = _.uniqueId('slides_');
 
 			Backbone.Model.apply(this, arguments);
+		},
+
+		"needScaling" : function(w, h) {
+			if(!this.attributes.loaded)
+				return 0;
+
+			if(this.attributes.width <= w && this.attributes.height <= h)
+				return 0;
+
+			return (this.attributes.width >= this.attributes.height)
+				? 1
+				: -1;
 		}
 	});
 
@@ -196,7 +208,7 @@ $(function(){
 		"initialize": function() {
 			this.$el.data('backbonePresentationView', this);
 
-			this.model.on('change', function(){console.log(this)});
+			this.model.on('change', this.scale, this);
 		},
 
 		"attributes": function() {
@@ -217,6 +229,18 @@ $(function(){
 			});
 
 			return this;
+		},
+
+		"scale"     : function() {
+			var scale = this.model.needScaling(this.$el.width(), this.$el.height());
+			if(scale)
+			{
+				this.$el.addClass(
+					(scale > 0) 
+					? 'scale-by-width'
+					: 'scale-by-height'
+				);
+			}
 		}
 	});
 

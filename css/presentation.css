@@ -61,8 +61,18 @@ div.presentation-nav-forw {
 .presentation-slide {
 	left: -2000px;
 	position: absolute;
+	width: 100%;
+	height: 100%;
 }
 
 .presentation-slide-active {
 	left: 0px;
+}
+
+.scale-by-width img {
+	width: 100%;
+}
+
+.scale-by-height img {
+	height: 100%;
 }
