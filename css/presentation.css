@@ -49,3 +49,12 @@ div.presentation-nav-forw {
 	z-index: 1;
 	position: absolute;
 }
+
+.presentation-slide {
+	left: -2000px;
+	position: absolute;
+}
+
+.presentation-slide-active {
+	left: 0px;
+}

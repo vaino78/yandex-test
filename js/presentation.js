@@ -14,6 +14,8 @@ $(function(){
 			if(typeof(url) == 'string')
 				url = {"url" : url};
 
+			url.id = _.uniqueId('slides_');
+
 			Backbone.Model.apply(this, arguments);
 		}
 	});
@@ -149,8 +151,15 @@ $(function(){
 
 			if(this.model.get('slide'))
 			{
-				var view = new SlideView({ "model" : this.model.get('slide') });
-				this.$('.presentation-view').html('').append(view.render().el);
+				var element = this.$('#' + this.model.get('slide').get('id')).get(0);
+				if(!element)
+				{
+					element = new SlideView({ "model" : this.model.get('slide') }).render().el;
+					this.$('.presentation-view').append(element);
+				}
+
+				this.$(element).addClass('presentation-slide-active');
+				this.$('.presentation-slide').not(element).removeClass('presentation-slide-active');
 			}
 		},
 
@@ -163,8 +172,15 @@ $(function(){
 		"className" : "presentation-slide",
 		"template"  : _.template($.trim($('#presentationSlide').html())),
 
+		"initialize": function() {
+			this.$el.data('backbonePresentationView', this);
+		},
+
+		"attributes": function() {
+			return {"id" : this.model.get('id')};
+		},
+
 		"render"    : function() {
-			console.log(this);
 			this.$el.html(this.template(this.model.attributes));
 			return this;
 		}
