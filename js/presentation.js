@@ -151,16 +151,13 @@ $(function(){
 
 			if(this.model.get('slide'))
 			{
-				var element = this.$('#' + this.model.get('slide').get('id')).get(0);
-				if(!element)
-				{
-					element = new SlideView({ "model" : this.model.get('slide') }).render().el;
-					this.$('.presentation-view').append(element);
-				}
-				var prev = this.model.previous('slide');
+				var element = this._getByModel(this.model.get('slide')), 
+					prev    = this._getByModel(this.model.previous('slide'));
 				if(prev)
-					this.$('#' + prev.get('id')).removeClass('presentation-slide-active');
+					this.$(prev).removeClass('presentation-slide-active');
 				this.$(element).addClass('presentation-slide-active');
+
+				this._siblings();
 			}
 		},
 
@@ -169,6 +166,21 @@ $(function(){
 		},
 
 		"_getByModel": function(m) {
+			if(!m)
+				return null;
+
+			var element = this.$('#' + m.get('id')).get(0);
+			if(!element)
+			{
+				element = new SlideView({ "model" : m }).render().el;
+				this.$('.presentation-view').append(element);
+			}
+
+			return element;
+		},
+
+		"_siblings" : function() {
+			
 		}
 	});
 
