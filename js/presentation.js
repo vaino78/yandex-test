@@ -74,13 +74,13 @@ $(function(){
 			return this.attributes.slides.at(index);
 		},
 
-		"validate"    : function(attrs) {
+		/*"validate"    : function(attrs) {
 			if(!attrs.total)
 				return "Пустая презентация";
 
 			if(attrs.index > attrs.total-1)
 				return "Некорректный номер слайда";
-		},
+		},*/
 
 		"back"        : function() {
 			if(!this.attributes.canBack)
@@ -121,8 +121,8 @@ $(function(){
 			"click .presentation-nav-begin"     : "begin",
 			"click .presentation-nav-end"       : "end",
 			"keydown .presentation-nav-current" : "onCurrentInput",
-			"click .presentation-nav-full"      : "toggleFullscreen"
-			//"keyup .presentation-nav-current"   : "onCurrentEnter"
+			"click .presentation-nav-full"      : "toggleFullscreen",
+			"keyup .presentation-nav-current"   : "onCurrentEnter"
 		},
 
 		"initialize" : function() {
