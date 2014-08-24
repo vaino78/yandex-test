@@ -10,7 +10,8 @@
 		<script src="//yastatic.net/underscore/1.6.0/underscore.js"></script>
 		<script src="//yastatic.net/backbone/1.1.2/backbone.js"></script>
 
-
+		<script src="js/presentation.js"></script>
+		<link rel="stylesheet" media="screen" href="css/presentation.css">
 	</head>
 	<body>
 
@@ -18,11 +19,35 @@
 
 <h2>Презентации</h2>
 
-<ul>
-	<li><img src="img/01-00.jpg" alt="presentation 1" class="presentationOpener" data-presentation-slide-url="js/pres-01.js"></li>
-	<li><img src="img/02-00.jpg" alt="presentation 2" class="presentationOpener"></li>
-	<li><img src="img/03-00.jpg" alt="presentation 3" class="presentationOpener"></li>
-</ul>
+<div class="presentationOpener"></div>
+
+<div class="presentationOpener"></div>
+
+<div class="presentationOpener"></div>
+
+<script type="text/x-template" id="presentationInnerTemplate">
+	<div class="presentation-pane">
+		<div class="presentation-view"></div>
+		<div class="presentation-nav">
+			<div class="presentation-nav-back"></div>
+			<div class="presentation-nav-forw"></div>
+			<div class="presentation-nav-menu">
+				<button class="presentation-nav-begin">&#9198;</button>
+				<button class="presentation-nav-back">&#9194;</button>
+
+				<span>
+					<input type="int" value="1" class="presentation-nav-current">
+					/
+					<span class="presentation-nav-total"></span>
+				</span>
+
+				<button class="presentation-nav-forw">&#9193;</button>
+				<button class="presentation-nav-end">&#9197;</button>
+
+			</div>
+		</div>
+	</div>
+</script>
 
 	</body>
 </html>

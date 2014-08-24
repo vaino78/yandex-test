@@ -18,11 +18,15 @@ $(function(){
 	var ViewModel = Backbone.Model.extend({
 		"defaults"    : {
 			"index"  : 0,
-			"slides" : new SlideCollection([]);
+			"slides" : new SlideCollection([])
 		},
 
 		"total"       : function() {
 			return this.attributes.slides.length;
+		},
+
+		"slide"       : function(index) {
+			return this.attributes.slides.at(index);
 		},
 
 		"back"        : function() {
@@ -74,6 +78,7 @@ $(function(){
 	// views
 
 	var AppView = Backbone.View.extend({
+		
 	});
 
 	var SlideView = Backbone.View.extend({
