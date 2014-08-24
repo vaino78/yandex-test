@@ -18,6 +18,7 @@ div.presentation-nav-forw {
 	height: 100%;
 	width:  40%;
 	top: 0px;
+	position: absolute;
 }
 
 div.presentation-nav-back {
