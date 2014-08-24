@@ -190,7 +190,13 @@ $(function(){
 		"onCurrentEnter" : function(ev) {
 			if(ev.keyCode != 13)
 				return;
-			this.model.set('index', (parseInt(ev.target.value)-1), {"validate" : true});
+			var ind = parseInt(ev.target.value);
+			if(ind > this.model.get('total'))
+			{
+				ev.preventDefault();
+				return;
+			}
+			this.model.set('index', (ind-1), {"validate" : true});
 		},
 
 		"onKeyNav"       : function(ev) {
