@@ -1,0 +1,22 @@
+[
+	"http://img-fotki.yandex.ru/get/4708/39680977.68/0_8be78_a373ffeb_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4709/39680977.68/0_8be7b_1ede2bb4_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4521/39680977.68/0_8be7c_80fa795f_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4414/39680977.68/0_8be7d_59a88c06_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5812/39680977.68/0_8be7e_256f2491_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5308/39680977.68/0_8be80_9462210f_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4814/39680977.68/0_8be81_a4698e1f_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5308/39680977.68/0_8be84_2a0c0bba_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4521/39680977.68/0_8be87_c80679a3_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5309/39680977.68/0_8be8a_333be603_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5411/39680977.68/0_8be8b_3f4751ac_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4708/39680977.68/0_8be8c_8b8f5eb0_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4709/39680977.68/0_8be8d_c2657a97_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5814/39680977.68/0_8be8e_41c8536e_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4414/39680977.68/0_8be8f_e2a80b2a_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5814/39680977.68/0_8be90_ad28b74e_XL.jpg",
+	"http://img-fotki.yandex.ru/get/5814/39680977.68/0_8be91_fb68812a_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4413/39680977.68/0_8be92_4f68c3d3_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4521/39680977.68/0_8be94_3c7d10ef_XL.jpg",
+	"http://img-fotki.yandex.ru/get/4414/39680977.68/0_8be98_1b9582a2_XL.jpg"
+]

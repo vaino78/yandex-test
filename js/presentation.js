@@ -74,6 +74,14 @@ $(function(){
 			return this.attributes.slides.at(index);
 		},
 
+		"validate"    : function(attrs) {
+			if(!attrs.total)
+				return "Пустая презентация";
+
+			if(attrs.index > attrs.total-1)
+				return "Некорректный номер слайда";
+		},
+
 		"back"        : function() {
 			if(!this.attributes.canBack)
 				return false;
@@ -113,8 +121,7 @@ $(function(){
 			"click .presentation-nav-begin"     : "begin",
 			"click .presentation-nav-end"       : "end",
 			"keydown .presentation-nav-current" : "onCurrentInput",
-			"keyup .presentation-nav-current"   : "onCurrentEnter",
-			"keyup .presentation-pane"          : "onKeyNav"
+			"keyup .presentation-nav-current"   : "onCurrentEnter"
 		},
 
 		"initialize" : function() {
@@ -176,11 +183,24 @@ $(function(){
 		"onCurrentEnter" : function(ev) {
 			if(ev.keyCode != 13)
 				return;
-			this.model.set('index', parseInt(ev.target.value)-1);
+			this.model.set('index', (parseInt(ev.target.value)-1), {"validate" : true});
 		},
 
 		"onKeyNav"       : function(ev) {
 			console.log(ev);
+		},
+
+		"_error"     : function() {
+			if(this.model.isValid())
+			{
+				this.$('.presentation-error').hide();
+				this.$('.presentation-error-text').text('');
+			}
+			else
+			{
+				this.$('.presentation-error-text').text(this.model.validationError);
+				this.$('.presentation-error').show();
+			}
 		},
 
 		"_canBack"   : function(value) {
