@@ -118,14 +118,17 @@ $(function(){
 		},
 
 		"_canBack"   : function(value) {
+			console.log('canBack:', value);
 			this.$('.presentation-nav-back, .presentation-nav-begin').attr('disabled', !value);
 		},
 
 		"_canForward": function(value) {
+			console.log('canForward:', value);
 			this.$('.presentation-nav-forw, .presentation-nav-end').attr('disabled', !value);
 		},
 
 		"_slide"     : function(value) {
+			console.log('slide:', value);
 		}
 	});
 
