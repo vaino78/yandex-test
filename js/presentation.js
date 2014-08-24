@@ -43,7 +43,8 @@ $(function(){
 			"canBack"    : null,
 			"canForward" : null,
 			"total"      : null,
-			"slides"     : new SlideCollection([])
+			"slides"     : new SlideCollection([]),
+			"fullscreen" : false
 		},
 
 		"initialize"  : function() {
@@ -108,6 +109,10 @@ $(function(){
 				return false;
 			this.set('index', this.total()-1);
 			return true;
+		},
+
+		"fullscreen"  : function(mode) {
+			this.set('fullscreen', mode);
 		}
 	});
 
@@ -132,6 +137,7 @@ $(function(){
 			this.model.on('change:canForward', this._canForward, this);
 			this.model.on('change:slide',      this._slide,      this);
 			this.model.on('change:total',      this._total,      this);
+			this.model.on('change:fullscreen', this._fullscreen, this);
 
 			this.render();
 
@@ -192,24 +198,29 @@ $(function(){
 		},
 
 		"toggleFullscreen" : function() {
-			if(
-				!document.fullsreenElement
-				&&
-				!document.mozFullScreenElement
-				&&
-				!document.webkitFullscreenElement
-				&&
-				!this.$('.presentation-pane').hasClass('presentation-pane-fullscreen')
-			)
+			this.model.set('fullscreen', !this.model.get('fullscreen'));
+		},
+
+		"_fullscreen" : function() {
+			if(this.model.get('fullscreen'))
 			{
 				this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
 
-				if (document.documentElement.requestFullscreen)
-					this.el.requestFullscreen();
-				else if (document.documentElement.mozRequestFullScreen)
-					this.el.mozRequestFullScreen();
-				else if (document.documentElement.webkitRequestFullscreen)
-					this.el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				if(
+					!document.fullsreenElement
+					&&
+					!document.mozFullScreenElement
+					&&
+					!document.webkitFullscreenElement
+				)
+				{
+					if (document.documentElement.requestFullscreen)
+						this.el.requestFullscreen();
+					else if (document.documentElement.mozRequestFullScreen)
+						this.el.mozRequestFullScreen();
+					else if (document.documentElement.webkitRequestFullscreen)
+						this.el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+				}
 			}
 			else
 			{
