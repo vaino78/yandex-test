@@ -157,14 +157,18 @@ $(function(){
 					element = new SlideView({ "model" : this.model.get('slide') }).render().el;
 					this.$('.presentation-view').append(element);
 				}
-
+				var prev = this.model.previous('slide');
+				if(prev)
+					this.$('#' + prev.get('id')).removeClass('presentation-slide-active');
 				this.$(element).addClass('presentation-slide-active');
-				this.$('.presentation-slide').not(element).removeClass('presentation-slide-active');
 			}
 		},
 
 		"_total"     : function(value) {
 			this.$('.presentation-nav-total').text(this.model.get('total'));
+		},
+
+		"_getByModel": function(m) {
 		}
 	});
 
