@@ -108,10 +108,13 @@ $(function(){
 
 	var AppView = Backbone.View.extend({
 		"events"     : {
-			"click .presentation-nav-back"  : "back",
-			"click .presentation-nav-forw"  : "forward",
-			"click .presentation-nav-begin" : "begin",
-			"click .presentation-nav-end"   : "end"
+			"click .presentation-nav-back"      : "back",
+			"click .presentation-nav-forw"      : "forward",
+			"click .presentation-nav-begin"     : "begin",
+			"click .presentation-nav-end"       : "end",
+			"keydown .presentation-nav-current" : "onCurrentInput",
+			"keyup .presentation-nav-current"   : "onCurrentEnter",
+			"keyup .presentation-pane"          : "onKeyNav"
 		},
 
 		"initialize" : function() {
@@ -132,6 +135,7 @@ $(function(){
 
 		"render"     : function() {
 			this.$el.html(this.template({}));
+			return this;
 		},
 
 		"back"       : function() {
@@ -148,6 +152,35 @@ $(function(){
 
 		"end"        : function() {
 			this.model.end();
+		},
+
+		"onCurrentInput" : function(ev) {
+			if(
+				(ev.keyCode >= 48 && ev.keyCode <= 57) // digits
+				||
+				(ev.keyCode >= 96 && ev.keyCode <= 105)// numpad
+				||
+				ev.keyCode == 8                        // backspace
+				||
+				ev.keyCode == 46                       // delete
+				||
+				ev.keyCode == 13                       // enter
+				||
+				(ev.keyCode == 37 || ev.keyCode == 39) // arrows
+			)
+				return true;
+			
+			ev.preventDefault();
+		},
+
+		"onCurrentEnter" : function(ev) {
+			if(ev.keyCode != 13)
+				return;
+			this.model.set('index', parseInt(ev.target.value)-1);
+		},
+
+		"onKeyNav"       : function(ev) {
+			console.log(ev);
 		},
 
 		"_canBack"   : function(value) {
@@ -248,7 +281,7 @@ $(function(){
 
 	
 
-	// jQuery plugin
+	// jQuery plugin as controller
 
 	$.fn.presentationViewer = function(options) {
 		return this.each(function() {
