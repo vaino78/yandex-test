@@ -169,18 +169,19 @@ $(function(){
 		},
 
 		"onCurrentInput" : function(ev) {
+			var keyCode = ev.keyCode || ev.which;
 			if(
-				(ev.keyCode >= 48 && ev.keyCode <= 57) // digits
+				(keyCode >= 48 && keyCode <= 57)    // digits
 				||
-				(ev.keyCode >= 96 && ev.keyCode <= 105)// numpad
+				(keyCode >= 96 && keyCode <= 105)   // numpad
 				||
-				ev.keyCode == 8                        // backspace
+				keyCode == 8                        // backspace
 				||
-				ev.keyCode == 46                       // delete
+				keyCode == 46                       // delete
 				||
-				ev.keyCode == 13                       // enter
+				keyCode == 13                       // enter
 				||
-				(ev.keyCode == 37 || ev.keyCode == 39) // arrows
+				(keyCode == 37 || keyCode == 39)    // arrows
 			)
 				return true;
 			
