@@ -44,13 +44,15 @@ $(function(){
 			"canForward" : null,
 			"total"      : null,
 			"slides"     : new SlideCollection([]),
-			"fullscreen" : false
+			"fullscreen" : false,
+			"playing"    : false
 		},
 
 		"initialize"  : function() {
-			this.on('change:index',  this.checkState);
-			this.on('change:slides', this.checkState);
-			this.on('change:slides', this.checkSlides);
+			this.on('change:index',   this.checkState);
+			this.on('change:slides',  this.checkState);
+			this.on('change:slides',  this.checkSlides);
+			this.on('change:playing', this.checkPlaying);
 			this.trigger('change:slides');
 		},
 
@@ -65,6 +67,22 @@ $(function(){
 
 		"checkSlides" : function() {
 			this.listenTo(this.attributes.slides, 'all', this.checkState);
+		},
+
+		"checkPlaying": function() {
+			if(this.get('playing'))
+			{
+				this.playingInterval = setInterval(
+					(function(that){ 
+						return function() { 
+							that.forward(); 
+						} 
+					})(this),
+					5000
+				);
+			}
+			else if(this.playingInterval)
+				clearInterval(this.playingInterval);
 		},
 
 		"total"       : function() {
@@ -92,7 +110,11 @@ $(function(){
 
 		"forward"     : function() {
 			if(!this.attributes.canForward)
+			{
+				if(this.attributes.playing)
+					this.set('playing', false);
 				return false;
+			}
 			this.set('index', (this.attributes.index+1));
 			return true;
 		},
@@ -126,8 +148,9 @@ $(function(){
 			"click .presentation-nav-begin"     : "begin",
 			"click .presentation-nav-end"       : "end",
 			"keydown .presentation-nav-current" : "onCurrentInput",
+			"keyup .presentation-nav-current"   : "onCurrentEnter",
 			"click .presentation-nav-full"      : "toggleFullscreen",
-			"keyup .presentation-nav-current"   : "onCurrentEnter"
+			"click .presentation-nav-play"      : "togglePlaying"
 		},
 
 		"initialize" : function() {
@@ -138,6 +161,7 @@ $(function(){
 			this.model.on('change:slide',      this._slide,      this);
 			this.model.on('change:total',      this._total,      this);
 			this.model.on('change:fullscreen', this._fullscreen, this);
+			this.model.on('change:playing',    this._playing,    this);
 
 			this.render();
 
@@ -145,6 +169,7 @@ $(function(){
 			this._canForward();
 			this._slide();
 			this._total();
+			this._playing();
 		},
 
 		"render"     : function() {
@@ -206,6 +231,18 @@ $(function(){
 
 		"toggleFullscreen" : function() {
 			this.model.set('fullscreen', !this.model.get('fullscreen'));
+		},
+
+		"togglePlaying"    : function() {
+			this.model.set('playing', !this.model.get('playing'));
+		},
+
+		"_playing"    : function() {
+			this.$('.presentation-nav-play').html(
+				this.model.get('playing')
+				? '&#x25FC'
+				: '&#9658;'
+			);
 		},
 
 		"_fullscreen" : function() {
