@@ -195,6 +195,8 @@ $(function(){
 
 		"initialize": function() {
 			this.$el.data('backbonePresentationView', this);
+
+			this.model.on('change', function(){console.log(this)});
 		},
 
 		"attributes": function() {
@@ -203,6 +205,17 @@ $(function(){
 
 		"render"    : function() {
 			this.$el.html(this.template(this.model.attributes));
+
+			var that = this;
+
+			this.$('img').on('load', function(){
+				that.model.set({
+					"loaded" : true,
+					"width"  : $(this).width(),
+					"height" : $(this).height()
+				});
+			});
+
 			return this;
 		}
 	});
