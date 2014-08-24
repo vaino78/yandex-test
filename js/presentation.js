@@ -146,6 +146,12 @@ $(function(){
 
 		"_slide"     : function(value) {
 			this.$('.presentation-nav-current').val(this.model.get('index') + 1);
+
+			if(this.model.get('slide'))
+			{
+				var view = new SlideView({ "model" : this.model.get('slide') });
+				this.$('.presentation-view').html('').append(view.render().el);
+			}
 		},
 
 		"_total"     : function(value) {
@@ -154,6 +160,14 @@ $(function(){
 	});
 
 	var SlideView = Backbone.View.extend({
+		"className" : "presentation-slide",
+		"template"  : _.template($.trim($('#presentationSlide').html())),
+
+		"render"    : function() {
+			console.log(this);
+			this.$el.html(this.template(this.model.attributes));
+			return this;
+		}
 	});
 
 	// init
