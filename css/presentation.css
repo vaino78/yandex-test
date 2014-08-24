@@ -35,7 +35,15 @@ div.presentation-nav-forw {
 	bottom: 0px;
 	margin: 0px auto;
 	left: 50%;
-	margin-left: -25%;
+}
+
+.presentation-nav-menu-sub {
+	position: relative;
+	left: -50%;
+	margin: 5px;
+	padding: 5px;
+	background-color: rgba(77, 77, 77, 0.4);
+	border-radius: 3px;
 }
 
 .presentation-nav-current {
