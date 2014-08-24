@@ -180,7 +180,12 @@ $(function(){
 		},
 
 		"_siblings" : function() {
-			
+			var sib = this.model.get('slides').slice(
+				this.model.get('index')+1, 
+				this.model.get('index')+4
+			);
+
+			_.each(sib, function(m) { this._getByModel(m) }, this);
 		}
 	});
 
