@@ -121,7 +121,8 @@ $(function(){
 			"click .presentation-nav-begin"     : "begin",
 			"click .presentation-nav-end"       : "end",
 			"keydown .presentation-nav-current" : "onCurrentInput",
-			"keyup .presentation-nav-current"   : "onCurrentEnter"
+			"click .presentation-nav-full"      : "toggleFullscreen"
+			//"keyup .presentation-nav-current"   : "onCurrentEnter"
 		},
 
 		"initialize" : function() {
@@ -188,6 +189,42 @@ $(function(){
 
 		"onKeyNav"       : function(ev) {
 			console.log(ev);
+		},
+
+		"toggleFullscreen" : function() {
+			if(
+				!document.fullsreenElement
+				&&
+				!document.mozFullScreenElement
+				&&
+				!document.webkitFullscreenElement
+				&&
+				!this.$('.presentation-pane').hasClass('presentation-pane-fullscreen')
+			)
+			{
+				this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
+
+				if (document.documentElement.requestFullscreen)
+					this.el.requestFullscreen();
+				else if (document.documentElement.mozRequestFullScreen)
+					this.el.mozRequestFullScreen();
+				else if (document.documentElement.webkitRequestFullscreen)
+					this.el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+			}
+			else
+			{
+				this.$('.presentation-pane').removeClass('presentation-pane-fullscreen');
+
+				if (document.cancelFullScreen)
+					document.cancelFullScreen();
+				else if (document.mozCancelFullScreen)
+					document.mozCancelFullScreen();
+				else if (document.webkitCancelFullScreen)
+					document.webkitCancelFullScreen();
+				
+			}
+
+			this.model.get('slides').each(function(el){ el.trigger('change'); });
 		},
 
 		"_error"     : function() {
@@ -294,6 +331,8 @@ $(function(){
 					: 'scale-by-height'
 				);
 			}
+			else
+				this.$el.removeClass('scale-by-width scale-by-height');
 		}
 	});
 
