@@ -27,7 +27,7 @@ $(function(){
 				return 0;
 
 			return (this.attributes.width >= this.attributes.height)
-				? 1
+				? ((w > this.attributes.width && h < this.attributes.height) ? -1 : 1)
 				: -1;
 		}
 	});
@@ -322,6 +322,7 @@ $(function(){
 		},
 
 		"scale"     : function() {
+			this.$el.removeClass('scale-by-width scale-by-height');
 			var scale = this.model.needScaling(this.$el.width(), this.$el.height());
 			if(scale)
 			{
@@ -331,8 +332,6 @@ $(function(){
 					: 'scale-by-height'
 				);
 			}
-			else
-				this.$el.removeClass('scale-by-width scale-by-height');
 		}
 	});
 
