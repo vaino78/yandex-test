@@ -88,9 +88,9 @@ $(function(){
 		"initialize" : function() {
 			this.template = $.trim($('#presentationInnerTemplate').html());
 
-			this.model.on('change:canBack',    this._canBack);
-			this.model.on('change:canForward', this._canForward);
-			this.model.on('change:slide',      this._slide);
+			this.model.on('change:canBack',    this._canBack,    this);
+			this.model.on('change:canForward', this._canForward, this);
+			this.model.on('change:slide',      this._slide,      this);
 
 			this.model.checkState();
 
@@ -102,10 +102,12 @@ $(function(){
 		},
 
 		"back"       : function() {
+			console.log('back');
 			this.model.back();
 		},
 
 		"forward"    : function() {
+			console.log('forward');
 			this.model.forward();
 		},
 
@@ -118,17 +120,18 @@ $(function(){
 		},
 
 		"_canBack"   : function(value) {
-			console.log('canBack:', value);
-			this.$('.presentation-nav-back, .presentation-nav-begin').attr('disabled', !value);
+			//console.log('canBack:', value);
+			this['$']('.presentation-nav-back, .presentation-nav-begin').attr('disabled', !this.model.get('canBack'));
 		},
 
 		"_canForward": function(value) {
-			console.log('canForward:', value);
-			this.$('.presentation-nav-forw, .presentation-nav-end').attr('disabled', !value);
+			//console.log('canForward:', value);
+			this['$']('.presentation-nav-forw, .presentation-nav-end').attr('disabled', !this.model.get('canForward'));
 		},
 
 		"_slide"     : function(value) {
-			console.log('slide:', value);
+			//console.log('slide:', value);
+			this.$('.presentation-nav-current').val(this.model.get('index') + 1);
 		}
 	});
 
@@ -148,7 +151,17 @@ $(function(){
 				view  = new AppView({
 					"el"    : this,
 					"model" : model
-				});
+				}),
+				slides    = $this.data('presentationSlides'),
+				slidesUrl = $this.data('presentationSlidesUrl');
+
+			if(slides && slides.length)
+				model.get('slides').set(slides);
+			else if(slidesUrl)
+			{
+				model.get('slides').url = slidesUrl;
+				model.get('slides').fetch();
+			}
 
 			$this.data('presentationViewer', view);
 		});
