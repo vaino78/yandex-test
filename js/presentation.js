@@ -152,7 +152,8 @@ $(function(){
 			"keydown .presentation-nav-current" : "onCurrentInput",
 			"keyup .presentation-nav-current"   : "onCurrentEnter",
 			"click .presentation-nav-full"      : "toggleFullscreen",
-			"click .presentation-nav-play"      : "togglePlaying"
+			"click .presentation-nav-play"      : "togglePlaying",
+			"keydown .presentation-pane"        : "onKeyNav"
 		},
 
 		"initialize" : function() {
@@ -225,10 +226,46 @@ $(function(){
 				return;
 			}
 			this.model.set('index', (ind-1), {"validate" : true});
+			ev.stopPropagation();
 		},
 
 		"onKeyNav"       : function(ev) {
-			console.log(ev);
+			var keyCode = ev.keyCode || ev.which;
+
+			switch(keyCode)
+			{
+				case 13:
+				case 32:
+				case 39:
+				case 40:
+					this.model.forward();
+					ev.preventDefault();
+					break;
+				case  8:
+				case 37:
+				case 38:
+					this.model.back();
+					ev.preventDefault();
+					break;
+				case 36:
+					this.model.begin();
+					ev.preventDefault();
+					break;
+				case 35:
+					this.model.end();
+					ev.preventDefault();
+					break;
+				case 27:
+					if(this.model.get('fullscreen')) {
+						this.model.set('fullscreen', false);
+						break;
+					}
+
+					if(this.model.get('playing'))
+						this.model.set('playing', false);
+					ev.preventDefault();
+					break;
+			}
 		},
 
 		"toggleFullscreen" : function() {
