@@ -285,11 +285,20 @@ $(function(){
 		},
 
 		"_fullscreen" : function() {
+
+			var fullScreenEnabled = (
+				document.documentElement.requestFullscreen
+				||
+				document.documentElement.mozRequestFullScreen
+				||
+				document.documentElement.webkitRequestFullscreen
+			);
+
 			if(this.model.get('fullscreen'))
 			{
-				this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
-
 				if(
+					fullScreenEnabled
+					&&
 					!document.fullsreenElement
 					&&
 					!document.mozFullScreenElement
@@ -304,18 +313,24 @@ $(function(){
 					else if (document.documentElement.webkitRequestFullscreen)
 						this.el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 				}
+				else if(!fullScreenEnabled)
+				{
+					this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
+				}
 			}
 			else
 			{
-				this.$('.presentation-pane').removeClass('presentation-pane-fullscreen');
-
-				if (document.cancelFullScreen)
-					document.cancelFullScreen();
-				else if (document.mozCancelFullScreen)
-					document.mozCancelFullScreen();
-				else if (document.webkitCancelFullScreen)
-					document.webkitCancelFullScreen();
-				
+				if(fullScreenEnabled)
+				{
+					if (document.cancelFullScreen)
+						document.cancelFullScreen();
+					else if (document.mozCancelFullScreen)
+						document.mozCancelFullScreen();
+					else if (document.webkitCancelFullScreen)
+						document.webkitCancelFullScreen();
+				}
+				else
+					this.$('.presentation-pane').removeClass('presentation-pane-fullscreen');
 			}
 
 			this.model.get('slides').each(function(el){ el.trigger('change'); });
