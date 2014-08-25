@@ -211,6 +211,16 @@ $(function(){
 
 			this.render();
 
+			this.$playingControl = this.$('.presentation-nav-play');
+			this.$pane           = this.$('.presentation-pane');
+			this.$error          = this.$('.presentation-error');
+			this.$errorText      = this.$('.presentation-error-text');
+			this.$backControl    = this['$']('.presentation-nav-back, .presentation-nav-begin');
+			this.$forwardControl = this['$']('.presentation-nav-forw, .presentation-nav-end');
+			this.$currentControl = this.$('.presentation-nav-current');
+			this.$totalControl   = this.$('.presentation-nav-total');
+			this.$view           = this.$('.presentation-view');
+
 			this._canBack();
 			this._canForward();
 			this._slide();
@@ -328,7 +338,7 @@ $(function(){
 		 */
 
 		"_playing"    : function() {
-			this.$('.presentation-nav-play').html(
+			this.$playingControl.html(
 				this.model.get('playing')
 				? '&#x25FC'
 				: '&#9658;'
@@ -367,7 +377,7 @@ $(function(){
 
 				if(!fullScreenEnabled || (fullScreenEnabled && window.opera))
 				{
-					this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
+					this.$pane.addClass('presentation-pane-fullscreen');
 				}
 			}
 			else
@@ -383,7 +393,7 @@ $(function(){
 				}
 
 				if(!fullScreenEnabled || (fullScreenEnabled && window.opera))
-					this.$('.presentation-pane').removeClass('presentation-pane-fullscreen');
+					this.$pane.removeClass('presentation-pane-fullscreen');
 			}
 
 			this.model.get('slides').each(function(el){ el.trigger('change'); });
@@ -392,26 +402,26 @@ $(function(){
 		"_error"     : function() {
 			if(this.model.isValid())
 			{
-				this.$('.presentation-error').hide();
-				this.$('.presentation-error-text').text('');
+				this.$error.hide();
+				this.$errorText.text('');
 			}
 			else
 			{
-				this.$('.presentation-error-text').text(this.model.validationError);
-				this.$('.presentation-error').show();
+				this.$errorText.text(this.model.validationError);
+				this.$error.show();
 			}
 		},
 
 		"_canBack"   : function(value) {
-			this['$']('.presentation-nav-back, .presentation-nav-begin').attr('disabled', !this.model.get('canBack'));
+			this.$backControl.attr('disabled', !this.model.get('canBack'));
 		},
 
 		"_canForward": function(value) {
-			this['$']('.presentation-nav-forw, .presentation-nav-end').attr('disabled', !this.model.get('canForward'));
+			this.$forwardControl.attr('disabled', !this.model.get('canForward'));
 		},
 
 		"_slide"     : function(value) {
-			this.$('.presentation-nav-current').val(this.model.get('index') + 1);
+			this.$currentControl.val(this.model.get('index') + 1);
 
 			if(this.model.get('slide'))
 			{
@@ -426,7 +436,7 @@ $(function(){
 		},
 
 		"_total"     : function(value) {
-			this.$('.presentation-nav-total').text(this.model.get('total'));
+			this.$totalControl.text(this.model.get('total'));
 		},
 
 		"_getByModel": function(m) {
@@ -437,7 +447,7 @@ $(function(){
 			if(!element)
 			{
 				element = new SlideView({ "model" : m }).render().el;
-				this.$('.presentation-view').append(element);
+				this.$view.append(element);
 			}
 
 			return element;
