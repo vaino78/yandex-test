@@ -4,6 +4,9 @@ $(function(){
 
 	// models
 
+	/**
+	 * Модель слайда презентации
+	 */
 	var Slide = Backbone.Model.extend({
 		"defaults" : {
 			"url"    : null,
@@ -19,6 +22,9 @@ $(function(){
 			Backbone.Model.apply(this, arguments);
 		},
 
+		/**
+		 * Вычисляет тип масштабирования картинки для размеров контейнера
+		 */
 		"needScaling" : function(w, h) {
 			if(!this.attributes.loaded)
 				return 0;
@@ -32,10 +38,16 @@ $(function(){
 		}
 	});
 
+	/**
+	 * Коллекция слайдов презентации
+	 */
 	var SlideCollection = Backbone.Collection.extend({
 		"model" : Slide
 	});
 
+	/**
+	 * Модель состояния виджета презентации
+	 */
 	var ViewModel = Backbone.Model.extend({
 		"defaults"    : {
 			"index"      : 0,
@@ -56,6 +68,9 @@ $(function(){
 			this.trigger('change:slides');
 		},
 
+		/**
+		 * Пересчитывает данные состояния виджета
+		 */
 		"checkState"  : function() {
 			this.set({
 				"total"      : this.total(),
@@ -65,10 +80,16 @@ $(function(){
 			});
 		},
 
+		/**
+		 * Осуществляет подписку на события коллекции
+		 */
 		"checkSlides" : function() {
 			this.listenTo(this.attributes.slides, 'all', this.checkState);
 		},
 
+		/**
+		 * Обработка режима проигрывания презентации
+		 */
 		"checkPlaying": function() {
 			if(this.get('playing'))
 			{
@@ -85,10 +106,16 @@ $(function(){
 				clearInterval(this.playingInterval);
 		},
 
+		/**
+		 * Подсчитывает количество слайдов
+		 */
 		"total"       : function() {
 			return this.attributes.slides.length;
 		},
 
+		/**
+		 * Возвращает слайд по индексу
+		 */
 		"slide"       : function(index) {
 			return this.attributes.slides.at(index);
 		},
@@ -101,6 +128,9 @@ $(function(){
 				return "Некорректный номер слайда";
 		},*/
 
+		/**
+		 * Осуществляет переход к предыдущему слайду
+		 */
 		"back"        : function() {
 			if(!this.attributes.canBack)
 				return false;
@@ -108,6 +138,9 @@ $(function(){
 			return true;
 		},
 
+		/**
+		 * Осуществляет переход к следующему слайду
+		 */
 		"forward"     : function() {
 			if(!this.attributes.canForward)
 			{
@@ -121,6 +154,9 @@ $(function(){
 			return true;
 		},
 
+		/**
+		 * Осуществляет переход к первому слайду
+		 */
 		"begin"       : function() {
 			if(!this.attributes.canBack)
 				return false;
@@ -128,6 +164,9 @@ $(function(){
 			return true;
 		},
 
+		/**
+		 * Осуществляет переход к последнему слайду
+		 */
 		"end"         : function() {
 			if(!this.attributes.canForward)
 				return false;
@@ -143,6 +182,10 @@ $(function(){
 
 	// views
 
+
+	/**
+	 * Отображение виджета
+	 */
 	var AppView = Backbone.View.extend({
 		"events"     : {
 			"click .presentation-nav-back"      : "back",
@@ -174,6 +217,10 @@ $(function(){
 			this._total();
 			this._playing();
 		},
+
+		/**
+		 * Эти методы принимают события окружения и меняют состояние модели
+		 */
 
 		"render"     : function() {
 			this.$el.html(this.template({}));
@@ -275,6 +322,10 @@ $(function(){
 		"togglePlaying"    : function() {
 			this.model.set('playing', !this.model.get('playing'));
 		},
+
+		/**
+		 * Эти методы являются обработчиками событий, связанных с изменением состояния модели
+		 */
 
 		"_playing"    : function() {
 			this.$('.presentation-nav-play').html(
@@ -402,6 +453,9 @@ $(function(){
 		}
 	});
 
+	/**
+	 * Отображение конкретного слайда
+	 */
 	var SlideView = Backbone.View.extend({
 		"className" : "presentation-slide",
 		"template"  : _.template($.trim($('#presentationSlide').html())),
@@ -446,9 +500,6 @@ $(function(){
 		}
 	});
 
-	// init
-
-	
 
 	// jQuery plugin as controller
 
