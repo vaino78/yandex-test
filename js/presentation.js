@@ -313,7 +313,8 @@ $(function(){
 					else if (document.documentElement.webkitRequestFullscreen)
 						this.el.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
 				}
-				else if(!fullScreenEnabled)
+
+				if(!fullScreenEnabled || (fullScreenEnabled && window.opera))
 				{
 					this.$('.presentation-pane').addClass('presentation-pane-fullscreen');
 				}
@@ -329,7 +330,8 @@ $(function(){
 					else if (document.webkitCancelFullScreen)
 						document.webkitCancelFullScreen();
 				}
-				else
+
+				if(!fullScreenEnabled || (fullScreenEnabled && window.opera))
 					this.$('.presentation-pane').removeClass('presentation-pane-fullscreen');
 			}
 
